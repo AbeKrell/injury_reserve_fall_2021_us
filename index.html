@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset=utf-8 />
+	<title>Injury Reserve: US Tour 2021</title>
+	<link rel="shortcut icon" type="image/jpg" href="data/img/favicon.jpg">
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
+
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background: "blue";
+			font-family: "Roboto", sans-serif;  \\original "Noto Sans"
+			color: #000000;
+		}
+
+		h1 {
+			position: absolute;
+			margin-top: 0;
+			top: 10px;
+			left: 45px;
+			font-size: 2em;
+			font-family: "Roboto", serif;
+			color: #ffffff
+			letter-spacing: .04em;
+			padding: 10px 15px;
+			background: rgba(198, 21, 19);
+			border: 1px solid grey;
+			border-radius: 3px;
+			z-index: 800;
+		}
+
+		h2 {
+			font-family: "Lora", serif;
+			letter-spacing: .04em;
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+		}
+
+		section {
+			position: absolute;
+			bottom: 0;
+			left: 10px;
+			width: 280px;
+			margin: 20px auto;
+			padding: 0 15px;
+			background: rgba(256, 256, 256);
+			border: 1px solid grey;
+			border-radius: 3px;
+			z-index: 800;
+		}
+
+		p {
+			font-size: .9em;
+			line-height: 1.5em;
+		}
+
+		a {
+			color: #005daa;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+
+	</style>
+</head>
+
+<body>
+
+	<h1>BY THE TIME I GET TO TOURING</h1>
+
+	<div id='map'></div>
+
+	<section>
+		<h2>Injury Reserve US Tour</h2>
+
+		<p>October 8th, Chicago °<br>October 10th, Philadelphia °<br>October 11th, New York °<br>October 12th, Boston ¯<br>October 13th, Baltimore ¯<br>October 16th, Atlanta ¯<br>November 3rd, Los Angeles ¯<br>November 4th, Oakland ¯<br>November 7th, Seattle ¯<br>November 8th, Portland ¯<br></br>With Slauson Malone ¯ & Zeroh ° </p>
+
+		<p>"Obviously this album is dedicated to Jordan Alexander Groggs, aka Stepa J. Groggs (with one p better get it right.) Typing here feels small in the space of your real physical absence but you, your voice and your words continue to echo around us all thru these recordings and so many others and everything else. thank you for your time, we love and miss you, of course of course."
+		</p>
+
+		<p>Quote provided by <a href="https://injuryreserve.bandcamp.com/album/by-the-time-i-get-to-phoenix">Injury Reserve</a></p>
+		<p>Map authored by Abe Krell<br> Audio: "Knees" by Injury Reserve<br>Published by Injury Reserve, All Rights Reserved</p>
+
+		<audio controls autoplay>
+			<source src="data/By_The_Time_I_Get_To_Phoenix/Knees.mp3"
+		</audio>
+
+	</section>
+
+	<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+
+	<script src="data/tour_path.js"></script>
+
+	<script>
+
+//options to be used when creating the map
+		var options = {
+			center: [36.08403, -81.83015],
+			zoom: 16
+		}
+
+//creation of the Leaflet map
+		var map = L.map('map', options);
+
+//request to load basemap
+
+	var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+		maxZoom: 20,
+		attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+var myRoute = L.geoJson(data, {
+	filter : function(feature) {
+		if(feature.geometry.type =="LineString") {
+			return feature;
+			}
+		},
+		style : function(feature) {
+			return {
+				color: "#FF3301",
+				weight: 10,
+				opacity: 5,
+				dashArray: "3, 15"
+			}
+		}
+}).addTo(map);
+
+var myStops = L.geoJson(data, {
+	filter : function(feature) {
+		if(feature.geometry.type == "Point") {
+			return feature;
+			}
+		},
+onEachFeature : function(feature, layer) {
+	layer.bindTooltip(feature.properties['name']);
+}
+}).addTo(map);
+
+map.fitBounds(myRoute.getBounds());
+
+	</script>
+
+</body>
+
+</html>
